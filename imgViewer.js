@@ -5,19 +5,20 @@
  */
 (function ($, window, undefined) {
     $.bindViewer = function (elm) {
-        var $obj = $(elm),
-            src = $obj.attr("src"),
+        var $elm = $(elm),
             $win = $(window);
         $("html").css("minHeight", "100%");
 
-        if ($obj.data("bindCategory")) $obj.off("click", viewImg);  //单例模式
+        if ($elm.data("bindCategory")) $elm.off("click", viewImg);  //单例模式
         else {
-            $obj.data("bindCategory", "bound");
-            $obj.on("click", viewImg);
+            $elm.data("bindCategory", "bound");
+            $elm.on("click", viewImg);
         }
 
         function viewImg() {
-            var win_h = window.innerHeight || document.documentElement.clientHeight,
+            var $obj = $(this),
+                src = $obj.attr("src"),
+                win_h = window.innerHeight || document.documentElement.clientHeight,
                 sroll_t = $win.scrollTop(),
                 sroll_l = $win.scrollLeft(),
                 doc_h = Math.max($("body").height(), $("html").height()),
