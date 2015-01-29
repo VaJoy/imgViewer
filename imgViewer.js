@@ -9,11 +9,9 @@
             $win = $(window);
         $("html").css("minHeight", "100%");
 
-        if ($elm.data("bindCategory")) $elm.off("click", viewImg);  //单例模式
-        else {
-            $elm.data("bindCategory", "bound");
-            $elm.on("click", viewImg);
-        }
+        if ($elm.data("bindCategory")) $(document).off("click", elm);
+        else $elm.data("bindCategory", "bound");
+        $(document).on("click", elm, viewImg);
 
         function viewImg() {
             var $obj = $(this),
@@ -23,7 +21,7 @@
                 sroll_t = $win.scrollTop(),
                 sroll_l = $win.scrollLeft(),
                 doc_h = Math.max($("body").height(), $("html").height()),
-                $img = $("<img style='position:absolute;z-index:9999998;left:50%;border-radius:8px;' src='" + src + "' />"),
+                $img = $("<img style='position:absolute;z-index:9999998;left:50%;border-radius:8px;opacity:0;' src='" + src + "' />"),
                 $bg = $("<div style='position:absolute;z-index:9999997;top:0;left:0;width:100%;height:" + doc_h + "px;background:black;opacity:0.6;'></div>"),
                 $close = $("<a title='关闭' style='position:absolute;z-index:9999999;left:50%;padding:11px 15px;cursor:pointer;background:black;color:white;border-radius:50%;font-family:Arial;font-size:14px;transition:background .5s;text-decoration:none;'>X</a>");
             $bg.appendTo("body").hide().fadeIn(200);
@@ -49,7 +47,7 @@
                         img_h = img_w*img_h/temp;
                     }
                 }
-                $(this).css({"top": win_h / 2 + sroll_t, "margin-left": sroll_l - 50, "margin-top": "-50px", "width": "100px", "height": "100px", "opacity": "0"})
+                $(this).css({"top": win_h / 2 + sroll_t, "margin-left": sroll_l - 50, "margin-top": "-50px", "width": "100px", "height": "100px"})
                     .animate({"opacity": "1", "margin-left": -img_w / 2, "margin-top": -img_h / 2, "width": img_w, "height": img_h}, 300,
                     function () {
                         $close.css({"top": win_h / 2 + sroll_t, "margin-left": img_w / 2 - 20 + sroll_l, "margin-top": -10 - img_h / 2}).fadeIn(500);
