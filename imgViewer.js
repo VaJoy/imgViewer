@@ -3,7 +3,7 @@
  Licensed under the MIT license.
  https://github.com/VaJoy/imgViewer
  */
-(function ($, window, undefined) {
+(function ($, window) {
     $.bindViewer = function (elm) {
         var $elm = $(elm),
             $win = $(window);
@@ -19,6 +19,7 @@
             var $obj = $(this),
                 src = $obj.attr("src"),
                 win_h = window.innerHeight || document.documentElement.clientHeight,
+                win_w = window.innerWidth || document.documentElement.clientWidth,
                 sroll_t = $win.scrollTop(),
                 sroll_l = $win.scrollLeft(),
                 doc_h = Math.max($("body").height(), $("html").height()),
@@ -34,8 +35,23 @@
             $img.appendTo("body").load(function () {
                 var img_w = $(this).width(),
                     img_h = $(this).height();
+                if(win_h*0.8<img_h||win_w*0.8<img_w){ //处理图片大过屏幕的问题
+                    var win_scale = win_w/win_h,
+                        img_scale = img_w/img_h,
+                        temp = 0;
+                    if(win_scale>img_scale){ //由图片高度着手处理
+                        temp = img_h;
+                        img_h = win_h*0.8;
+                        img_w = img_w*img_h/temp;
+                    }else{  //由图片宽度着手处理
+                        temp = img_w;
+                        img_w = win_w*0.8;
+                        img_h = img_w*img_h/temp;
+                    }
+                }
                 $(this).css({"top": win_h / 2 + sroll_t, "margin-left": sroll_l - 50, "margin-top": "-50px", "width": "100px", "height": "100px", "opacity": "0"})
-                    .animate({"opacity": "1", "margin-left": -img_w / 2, "margin-top": -img_h / 2, "width": img_w, "height": img_h}, 300, function () {
+                    .animate({"opacity": "1", "margin-left": -img_w / 2, "margin-top": -img_h / 2, "width": img_w, "height": img_h}, 300,
+                    function () {
                         $close.css({"top": win_h / 2 + sroll_t, "margin-left": img_w / 2 - 20 + sroll_l, "margin-top": -10 - img_h / 2}).fadeIn(500);
                     });
                 $close.add($bg).click(function () {
@@ -46,4 +62,4 @@
         }
     };
 
-}(jQuery, window, undefined));
+}(jQuery, window));
