@@ -20,9 +20,8 @@
                 win_w = window.innerWidth || document.documentElement.clientWidth,
                 sroll_t = $win.scrollTop(),
                 sroll_l = $win.scrollLeft(),
-                doc_h = Math.max($("body").height(), $("html").height()),
                 $img = $("<img style='position:absolute;z-index:9999998;left:50%;border-radius:8px;opacity:0;' src='" + src + "' />"),
-                $bg = $("<div style='position:absolute;z-index:9999997;top:0;left:0;width:100%;height:" + doc_h + "px;background:black;opacity:0.6;'></div>"),
+                $bg = $("<div style='position:fixed;z-index:9999997;top:0;bottom:0;left:0;right:0;background:black;opacity:0.6;'></div>"),
                 $close = $("<a title='关闭' style='position:absolute;z-index:9999999;left:50%;padding:11px 15px;cursor:pointer;background:black;color:white;border-radius:50%;font-family:Arial;font-size:14px;transition:background .5s;text-decoration:none;'>X</a>");
             $bg.appendTo("body").hide().fadeIn(200);
             $close.appendTo("body").hover(function () {
@@ -30,6 +29,7 @@
             }, function () {
                 $(this).css("background", "black")
             }).hide();
+            $(document).off("click", $img.get(0));
             $img.appendTo("body").load(function () {
                 var img_w = $(this).width(),
                     img_h = $(this).height();
